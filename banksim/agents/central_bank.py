@@ -1,8 +1,8 @@
 import numpy as np
 from mesa import Agent
 
-from model.strategies.central_bank_ewa_strategy import CentralBankEWAStrategy
-from model.util import Util
+from banksim.strategies.central_bank_ewa_strategy import CentralBankEWAStrategy
+from banksim.util import Util
 from ..exogeneous_factors import ExogenousFactors
 
 
@@ -131,7 +131,7 @@ class CentralBank(Agent):
         if self.isIntelligent:
             self.update_strategy_choice_probability()
             self.pick_new_strategy()
-            self.minimumCapitalAdequacyRatio = self.currentlyChosenStrategy.getAlphaValue()
+            self.minimumCapitalAdequacyRatio = self.currentlyChosenStrategy.get_alpha_value()
         if ExogenousFactors.isCapitalRequirementActive:
             self.observe_banks_capital_adequacy(self.banks)
 

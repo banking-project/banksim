@@ -1,6 +1,6 @@
 from mesa import Agent
 
-from model.util import Util
+from banksim.util import Util
 
 
 class CorporateClient(Agent):

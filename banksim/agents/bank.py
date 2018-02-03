@@ -3,8 +3,8 @@ from copy import copy
 import numpy as np
 from mesa import Agent
 
-from model.strategies.bank_ewa_strategy import BankEWAStrategy
-from model.util import Util
+from banksim.strategies.bank_ewa_strategy import BankEWAStrategy
+from banksim.util import Util
 from ..exogeneous_factors import BankSizeDistribution, ExogenousFactors
 
 

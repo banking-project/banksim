@@ -11,15 +11,14 @@ from .exogeneous_factors import ExogenousFactors, SimulationType, InterbankPrior
 
 class BankingModel(Model):
 
-    def __init__(self, simulation_type='HighSpread', exogenous_factors=None):
+    def __init__(self, simulation_type='HighSpread', exogenous_factors=None, number_of_banks=None):
         super().__init__()
 
         # Simulation data
         self.simulation_type = SimulationType[simulation_type]
         BankingModel.update_exogeneous_factors_by_simulation_type(self.simulation_type)
 
-        if exogenous_factors:
-            BankingModel.update_exogeneous_factors(exogenous_factors)
+        BankingModel.update_exogeneous_factors(exogenous_factors, number_of_banks)
 
         # Economy data
         self.numberBanks = ExogenousFactors.numberBanks
@@ -96,16 +95,19 @@ class BankingModel(Model):
             bank.initialSize *= factor
 
     @staticmethod
-    def update_exogeneous_factors(exogenous_factors):
-        if type(exogenous_factors) is dict:
+    def update_exogeneous_factors(exogenous_factors, number_of_banks):
+        if isinstance(exogenous_factors, dict):
             for key, value in exogenous_factors.items():
                 setattr(ExogenousFactors, key, value)
+
+        if number_of_banks:
+            ExogenousFactors.numberBanks = number_of_banks
 
     @staticmethod
     def update_exogeneous_factors_by_simulation_type(simulation_type):
         if simulation_type == SimulationType.HighSpread:
             pass
-        elif simulation_type == SimulationType.LowSpread:
+        if simulation_type == SimulationType.LowSpread:
             ExogenousFactors.standardCorporateClientLoanInterestRate = 0.06
         elif simulation_type == SimulationType.ClearingHouse:
             ExogenousFactors.isClearingGuaranteeAvailable = True

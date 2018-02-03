@@ -1,8 +1,8 @@
 import numpy as np
 from mesa import Agent
 
-from model.strategies.depositor_ewa_strategy import DepositorEWAStrategy
-from model.util import Util
+from banksim.strategies.depositor_ewa_strategy import DepositorEWAStrategy
+from banksim.util import Util
 from ..exogeneous_factors import ExogenousFactors
 
 
@@ -53,7 +53,7 @@ class Depositor(Agent):
                 # if in simulation, uses last real withdrawal by this depositor
                 shock = self.deposit.lastPercentageWithdrawn
             else:
-                # Simulating a Diamond & Dribvig model...
+                # Simulating a Diamond & Dribvig banksim...
                 shock = ExogenousFactors.amountWithdrawn if Util.get_random_uniform(
                     1) < ExogenousFactors.probabilityofWithdrawal else 0
         self.deposit.lastPercentageWithdrawn = shock
