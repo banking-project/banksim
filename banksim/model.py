@@ -1,4 +1,5 @@
 from mesa import Model
+from mesa.datacollection import DataCollector
 
 from .activation import MultiStepActivation
 from .agents.bank import Bank
@@ -29,6 +30,12 @@ class BankingModel(Model):
 
         # Scheduler
         self.schedule = MultiStepActivation(self)
+
+        # DataCollector
+        self.datacollector = DataCollector(
+            model_reporters={"Insolvencies": number_of_insolvencies,
+                             "Contagions": number_of_contagions}
+        )
 
         # Central Bank
         _params = (ExogenousFactors.centralBankLendingInterestRate,
@@ -80,6 +87,7 @@ class BankingModel(Model):
         self.schedule.period_0()
         self.schedule.period_1()
         self.schedule.period_2()
+        self.datacollector.collect(self)
 
     def run_model(self, n):
         for i in range(n):
@@ -128,3 +136,12 @@ class BankingModel(Model):
             ExogenousFactors.isDepositInsuranceAvailable = True
         elif simulation_type == SimulationType.DepositInsuranceBenchmark:
             ExogenousFactors.areDepositorsZeroIntelligenceAgents = False
+
+
+# Data Collector Functions
+def number_of_insolvencies(model):
+    return model.schedule.central_bank.insolvencyPerCycleCounter / model.numberBanks
+
+
+def number_of_contagions(model):
+    return model.schedule.central_bank.insolvencyDueToContagionPerCycleCounter / model.numberBanks

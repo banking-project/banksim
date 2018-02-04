@@ -4,4 +4,3 @@ mesa==0.8.3
 networkx==2.0
 
 flake8
-

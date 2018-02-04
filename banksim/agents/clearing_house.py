@@ -176,6 +176,8 @@ class ClearingHouse(Agent):
             # residual collateral redistributed
             if g_helper.residual < 0:
                 g_helper.redistributedCollateral = g_helper.residual
+            elif self.totalCollateralSurplus == 0:
+                g_helper.redistributedCollateral = 0
             else:
                 f = min(1.0, -self.totalCollateralDeficit / self.totalCollateralSurplus)
                 g_helper.redistributedCollateral = (1 - f) * g_helper.residual
