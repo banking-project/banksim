@@ -4,7 +4,7 @@ from mesa.visualization.modules import ChartModule
 from mesa.visualization.modules import TextElement
 
 from banksim.exogeneous_factors import SimulationType
-from banksim.model import BankingModel
+from examples.VisualExecution.model import MyModel
 
 
 class InfoTextElement(TextElement):
@@ -28,6 +28,7 @@ model_params = {
     'number_of_banks': UserSettableParameter('slider', 'Number of banks', 10, 2, 100, 1)
 }
 
-server = ModularServer(BankingModel, [chart, InfoTextElement()], "BankSim", model_params)
+server = ModularServer(MyModel, [chart, InfoTextElement()], "BankSim", model_params)
 server.port = 8521
+
 server.launch()

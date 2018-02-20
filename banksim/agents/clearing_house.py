@@ -1,8 +1,8 @@
 import numpy as np
 from mesa import Agent
 
+from banksim.exogeneous_factors import ExogenousFactors, InterbankPriority
 from banksim.util import Util
-from ..exogeneous_factors import ExogenousFactors, InterbankPriority
 
 
 class ClearingHouse(Agent):

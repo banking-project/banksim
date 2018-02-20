@@ -1,9 +1,9 @@
 import numpy as np
 from mesa import Agent
 
+from banksim.exogeneous_factors import ExogenousFactors
 from banksim.strategies.central_bank_ewa_strategy import CentralBankEWAStrategy
 from banksim.util import Util
-from ..exogeneous_factors import ExogenousFactors
 
 
 class CentralBank(Agent):

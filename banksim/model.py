@@ -1,16 +1,24 @@
 from mesa import Model
-from mesa.datacollection import DataCollector
 
-from .activation import MultiStepActivation
-from .agents.bank import Bank
-from .agents.central_bank import CentralBank
-from .agents.clearing_house import ClearingHouse
-from .agents.corporate_client import CorporateClient
-from .agents.depositor import Depositor
-from .exogeneous_factors import ExogenousFactors, SimulationType, InterbankPriority
+from banksim.activation import MultiStepActivation
+from banksim.agents.bank import Bank
+from banksim.agents.central_bank import CentralBank
+from banksim.agents.clearing_house import ClearingHouse
+from banksim.agents.corporate_client import CorporateClient
+from banksim.agents.depositor import Depositor
+from banksim.exogeneous_factors import ExogenousFactors, SimulationType, InterbankPriority
 
 
 class BankingModel(Model):
+    """
+    BankSim is a banking agent-based simulation framework developed in Python 3+.
+
+    Its main goal is to provide an out-of-the-box simulation tool to study the impacts of a broad range of regulation policies over the banking system.
+
+    The basic model is based on the paper by Barroso, R. V. et al., Interbank network and regulation policies: an analysis through agent-based simulations with adaptive learning, published in the Journal Of Network Theory In Finance, v. 2, n. 4, p. 53–86, 2016.
+
+    The paper is available online at https://mpra.ub.uni-muenchen.de/73308.
+    """
 
     def __init__(self, simulation_type='HighSpread', exogenous_factors=None, number_of_banks=None):
         super().__init__()
@@ -30,12 +38,6 @@ class BankingModel(Model):
 
         # Scheduler
         self.schedule = MultiStepActivation(self)
-
-        # DataCollector
-        self.datacollector = DataCollector(
-            model_reporters={"Insolvencies": number_of_insolvencies,
-                             "Contagions": number_of_contagions}
-        )
 
         # Central Bank
         _params = (ExogenousFactors.centralBankLendingInterestRate,
@@ -87,7 +89,6 @@ class BankingModel(Model):
         self.schedule.period_0()
         self.schedule.period_1()
         self.schedule.period_2()
-        self.datacollector.collect(self)
 
     def run_model(self, n):
         for i in range(n):
@@ -136,12 +137,3 @@ class BankingModel(Model):
             ExogenousFactors.isDepositInsuranceAvailable = True
         elif simulation_type == SimulationType.DepositInsuranceBenchmark:
             ExogenousFactors.areDepositorsZeroIntelligenceAgents = False
-
-
-# Data Collector Functions
-def number_of_insolvencies(model):
-    return model.schedule.central_bank.insolvencyPerCycleCounter / model.numberBanks
-
-
-def number_of_contagions(model):
-    return model.schedule.central_bank.insolvencyDueToContagionPerCycleCounter / model.numberBanks

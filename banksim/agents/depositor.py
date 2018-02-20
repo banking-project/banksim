@@ -1,9 +1,11 @@
+import math
+
 import numpy as np
 from mesa import Agent
 
+from banksim.exogeneous_factors import ExogenousFactors
 from banksim.strategies.depositor_ewa_strategy import DepositorEWAStrategy
 from banksim.util import Util
-from ..exogeneous_factors import ExogenousFactors
 
 
 class Depositor(Agent):
@@ -75,7 +77,7 @@ class Depositor(Agent):
                     strategy.insolvencyCounter += 1
 
             amount = self.initialDeposit.amount
-            profit = 100 * np.log(final_consumption / amount)
+            profit = 100 * math.log(final_consumption / amount)
             strategy.finalConsumption = final_consumption
             strategy.strategyProfit = profit
             strategy.amountEarlyWithdraw = self.amountEarlyWithdraw
