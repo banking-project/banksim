@@ -14,8 +14,8 @@ class MyModel(BankingModel):
     The paper is available online at https://mpra.ub.uni-muenchen.de/73308.
     """
 
-    def __init__(self, simulation_type='HighSpread', exogenous_factors=None, number_of_banks=None):
-        super().__init__(simulation_type, exogenous_factors, number_of_banks)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         # DataCollector
         self.datacollector = DataCollector(
