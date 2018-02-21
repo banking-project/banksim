@@ -90,16 +90,16 @@ class Bank(Agent):
         if current_capital_ratio <= minimum_capital_ratio_required:
             adjustment_factor = current_capital_ratio / minimum_capital_ratio_required
             for corporateClient in self.corporateClients:
-                original_loan_amount = corporateClient.loan.loanAmount
+                original_loan_amount = corporateClient.loanAmount
                 new_loan_amount = original_loan_amount * adjustment_factor
-                corporateClient.loan.loanAmount = new_loan_amount
+                corporateClient.loanAmount = new_loan_amount
                 self.balanceSheet.liquidAssets += (original_loan_amount - new_loan_amount)
 
             self.update_non_financial_sector_loans()
 
     def update_non_financial_sector_loans(self):
         self.balanceSheet.nonFinancialSectorLoan = sum(
-            client.loan.loanAmount for client in self.corporateClients)
+            client.loanAmount for client in self.corporateClients)
 
     def get_real_sector_risk_weighted_assets(self):
         if ExogenousFactors.standardCorporateClients:
@@ -107,12 +107,12 @@ class Bank(Agent):
         else:
             for corporateClient in self.corporateClients:
                 if corporateClient.probabilityOfDefault == ExogenousFactors.retailCorporateClientDefaultRate:
-                    return corporateClient.loan.loanAmount * ExogenousFactors.retailCorporateLoanRiskWeight
+                    return corporateClient.loanAmount * ExogenousFactors.retailCorporateLoanRiskWeight
                 elif corporateClient.probabilityOfDefault == ExogenousFactors.wholesaleCorporateClientDefaultRate:
-                    return corporateClient.loan.loanAmount * ExogenousFactors.wholesaleCorporateLoanRiskWeight
+                    return corporateClient.loanAmount * ExogenousFactors.wholesaleCorporateLoanRiskWeight
                 else:
                     # default risk weight
-                    return corporateClient.loan.loanAmount * ExogenousFactors.CorporateLoanRiskWeight
+                    return corporateClient.loanAmount * ExogenousFactors.CorporateLoanRiskWeight
 
     def withdraw_deposit(self, amount_to_withdraw):
         if amount_to_withdraw > 0:
@@ -173,7 +173,7 @@ class Bank(Agent):
             proportion_of_illiquid_assets_sold = amount_sold / self.balanceSheet.nonFinancialSectorLoan
 
             for firm in self.corporateClients:
-                firm.loan.loanAmount *= 1 - proportion_of_illiquid_assets_sold
+                firm.loanAmount *= 1 - proportion_of_illiquid_assets_sold
             self.balanceSheet.nonFinancialSectorLoan -= amount_sold
 
     def get_profit(self):
