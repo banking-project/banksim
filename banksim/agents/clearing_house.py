@@ -220,7 +220,7 @@ class ClearingHouse(Agent):
             bank.balanceSheet.interbankLoan = self.get_interbank_market_position(bank)
 
     def period_0(self):
-        self.reset()
+        pass
 
     def period_1(self):
         if self.model.interbankLendingMarketAvailable:

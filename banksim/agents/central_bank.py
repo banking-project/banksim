@@ -127,7 +127,6 @@ class CentralBank(Agent):
         self.insolvencyDueToContagionPerCycleCounter = 0
 
     def period_0(self):
-        self.reset()
         if self.isIntelligent:
             self.update_strategy_choice_probability()
             self.pick_new_strategy()

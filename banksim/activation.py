@@ -36,6 +36,11 @@ class MultiStepActivation:
         return itertools.chain(self.depositors, self.banks, [self.clearing_house], [self.central_bank],
                                self.corporate_clients)
 
+    def reset_cycle(self):
+        self.cycle += 1
+        for _ in self.agents:
+            _.reset()
+
     def period_0(self):
         self.period = 0
         for _ in self.agents:
@@ -50,4 +55,3 @@ class MultiStepActivation:
         self.period = 2
         for _ in self.agents:
             _.period_2()
-        self.cycle += 1

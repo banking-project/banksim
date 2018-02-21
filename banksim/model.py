@@ -86,6 +86,7 @@ class BankingModel(Model):
                 self.schedule.add_corporate_client(corporate_client)
 
     def step(self):
+        self.schedule.reset_cycle()
         self.schedule.period_0()
         self.schedule.period_1()
         self.schedule.period_2()

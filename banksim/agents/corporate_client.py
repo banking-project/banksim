@@ -36,7 +36,7 @@ class CorporateClient(Agent):
         self.percentageRepaid = 0
 
     def period_0(self):
-        self.reset()
+        pass
 
     def period_1(self):
         pass
